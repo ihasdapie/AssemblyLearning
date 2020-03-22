@@ -63,5 +63,8 @@ _asm_main:  ;note underscores ( C Calling Convention)
 	call print_int
 	call print_nl
 	
-
+	popa
+	mov eax, 0
+	leave
+	ret
 	
