@@ -1,6 +1,7 @@
 
 %include "asm_io.inc"
 
+
 segment .data ; only init'd data should be defined here
 
 in_show1 db "Number to add: ", 0
@@ -19,52 +20,55 @@ segment .text ; code segmnet
 	; global gives label external scope (as per norm)
 _asm_main:  ;note underscores ( C Calling Convention) 
 	enter 0,0
-	pusha
+	push rax
+	push rbx
 	
-	mov eax, in_show1
+	mov rax, in_show1
 	call print_string
 	
 	call read_int
-	mov [input_1], eax
+	mov [input_1], rax
 	
-	mov eax, in_show2
+	mov rax, in_show2
 	call print_string
 	
 	call read_int
-	mov [input_2], eax
+	mov [input_2], rax
 	
 	;add values
-	mov eax, [input_1]
-	add eax, [input_2]
-	mov ebx, eax
+	mov rax, [input_1]
+	add rax, [input_2]
+	mov rbx, rax
 	
 	dump_regs 1
 	dump_mem 2, out_show2, 1
 	
 	;print output
-	mov eax, out_show1
+	mov rax, out_show1
 	call print_string
 	
-	mov eax, [input_1]
+	mov rax, [input_1]
 	call print_int
 	call print_nl
 	
-	mov eax, out_show2
+	mov rax, out_show2
 	call print_string
 	
-	mov eax, [input_2]
+	mov rax, [input_2]
 	call print_int
 	call print_nl
 	
-	mov eax, out_show3
+	mov rax, out_show3
 	call print_string
 	
-	mov eax, ebx
+	mov rax, rbx
 	call print_int
 	call print_nl
 	
-	popa
-	mov eax, 0
+	pop rax
+	pop rbx
+	
+	mov rax, 0
 	leave
 	ret
 	
