@@ -1,3 +1,4 @@
+; takes user input and prints it out
 
 section .data
 
@@ -21,10 +22,76 @@ SYS_exit equ 60
 SYS_creat equ 85
 SYS_time equ 201
 
+; other data 
 
+inputLength equ 50
+prompt db "Input: ", NULL
+newLine db LF, NULL
 
+section .bss
+
+chr resb 1
+inputLine resb inputLength+2
 
 section .text
+
+global _start
+_start:
+
+	;display prompt
+	mov rdi, prompt
+	call printString
+
+	; read user input
+	mov rbx, inputLine ;rbx = &inLine
+	mov r12, 0
+
+	readChar:
+		mov rax, SYS_read ; system code for read
+		mov rdi, STDIN ;standard input
+		lea rdi, byte [chr] ;load address of current chracter to rdi (load effective address)
+		mov rdx, 1 ; how many to read
+		syscall 
+		
+		mov al, byte [chr] ; mov current chracter to a1 (note that this loads the value, not addr (lea vs mov)
+		cmp al, LF ; if newLine, done
+		je readDone
+		
+		inc r12 ;count ++
+		cmp r12, inputLength
+		jae readChar
+		
+		mov byte [rbx], al ; inputLine[i] = chr
+		inc rbx ; shift to next byte
+		
+		jmp readChar
+		
+	readDone:
+		mov byte [rbx], NULL ; null-terminate c-string
+		
+		
+	mov rdi, inputLine
+	call printString
+
+done:
+	mov rax, SYS_exit
+	mov rdi, EXIT_SUCCESS
+	syscall
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 global printString
 printString:
@@ -56,5 +123,3 @@ printString:
 		pop rbx
 		ret
 		
-global printInt
-printInt:
