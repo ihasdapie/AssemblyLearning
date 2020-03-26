@@ -32,20 +32,31 @@ section .text
 global _start
 _start:
 	
-	push r8
-	mov r8, 0
-	printLoop:	
-		cmp r8, numIter
-		je done
-		inc r8
+; printLoop with jmp
+	;~ mov rcx, 0
+
+	;~ printLoop:	
+		;~ cmp r8, [numIter]
+		;~ je done
+		;~ inc r8
 		
+		;~ mov rdi, hworld
+		;~ call printString
+		;~ mov rdi, newLine
+		;~ call printString
+		;~ jmp printLoop
+		
+; printLoop with loop
+	
+	
+	printLoop:
+		mov rcx, [numIter]
 		mov rdi, hworld
 		call printString
-		mov rdi, newLine
-		call printString
-		jmp printLoop
+		loop printLoop
+
 done:
-	pop r8
+	
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
