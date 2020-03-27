@@ -65,7 +65,7 @@ _start:
 		inc rbx ; shift to next byte
 		
 		jmp readChar
-		
+			
 	readDone:
 		mov byte [rbx], NULL ; null-terminate c-string
 		
@@ -77,20 +77,6 @@ done:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 global printString

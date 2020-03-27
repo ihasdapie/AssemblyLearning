@@ -80,47 +80,33 @@
     80 00000071 0F05                    syscall
     81                                 
     82                                 
-    83                                 
-    84                                 
-    85                                 
+    83                                 [global printString]
+    84                                 printString:
+    85 00000073 53                      push rbx
     86                                 
     87                                 
-    88                                 
-    89                                 
+    88 00000074 4889FB                  mov rbx, rdi
+    89 00000077 48C7C200000000          mov rdx, 0
     90                                 
-    91                                 
-    92                                 
-    93                                 
-    94                                 
-    95                                 
-    96                                 
-    97                                 [global printString]
-    98                                 printString:
-    99 00000073 53                      push rbx
-   100                                 
+    91                                  charCountLoop:
+    92 0000007E 803B00                  cmp byte [rbx], NULL
+    93 00000081 7406                    je charCountDone
+    94 00000083 48FFC2                  inc rdx
+    95 00000086 48FFC3                  inc rbx
+    96 00000089 EBF1                    jmp charCountLoop
+    97                                 
+    98                                  charCountDone:
+    99 0000008B 4883FA00                cmp rdx, 0
+   100 0000008F 7411                    je funcDone
    101                                 
-   102 00000074 4889FB                  mov rbx, rdi
-   103 00000077 48C7C200000000          mov rdx, 0
-   104                                 
-   105                                  charCountLoop:
-   106 0000007E 803B00                  cmp byte [rbx], NULL
-   107 00000081 7406                    je charCountDone
-   108 00000083 48FFC2                  inc rdx
-   109 00000086 48FFC3                  inc rbx
-   110 00000089 EBF1                    jmp charCountLoop
-   111                                 
-   112                                  charCountDone:
-   113 0000008B 4883FA00                cmp rdx, 0
-   114 0000008F 7411                    je funcDone
-   115                                 
-   116                                 
-   117                                 
-   118 00000091 48C7C001000000          mov rax, SYS_write
-   119 00000098 4889FE                  mov rsi, rdi
-   120 0000009B 48C7C701000000          mov rdi, STDOUT
-   121 000000A2 0F05                    syscall
-   122                                 
-   123                                  funcDone:
-   124 000000A4 5B                      pop rbx
-   125 000000A5 C3                      ret
-   126                                 
+   102                                 
+   103                                 
+   104 00000091 48C7C001000000          mov rax, SYS_write
+   105 00000098 4889FE                  mov rsi, rdi
+   106 0000009B 48C7C701000000          mov rdi, STDOUT
+   107 000000A2 0F05                    syscall
+   108                                 
+   109                                  funcDone:
+   110 000000A4 5B                      pop rbx
+   111 000000A5 C3                      ret
+   112                                 
