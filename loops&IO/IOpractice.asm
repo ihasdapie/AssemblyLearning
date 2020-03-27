@@ -2,39 +2,40 @@
 
 section .data
 
-; standard constants
-LF equ 10
-NULL equ 0
-TRUE equ 1
-FALSE equ 0
+	; standard constants
+	LF equ 10
+	NULL equ 0
+	TRUE equ 1
+	FALSE equ 0
 
-EXIT_SUCCESS equ 0
-STDIN equ 0 ;standard input
-STDOUT equ 1 ; standard output
-STDERR equ 2 ; standard error
+	EXIT_SUCCESS equ 0
+	
+	STDIN equ 0 ;standard input
+	STDOUT equ 1 ; standard output
+	STDERR equ 2 ; standard error
 
-SYS_read equ 0
-SYS_write equ 1
-SYS_open equ 2
-SYS_close equ 3
-SYS_fork equ 57
-SYS_exit equ 60
-SYS_creat equ 85
-SYS_time equ 201
+	SYS_read equ 0
+	SYS_write equ 1
+	SYS_open equ 2
+	SYS_close equ 3
+	SYS_fork equ 57
+	SYS_exit equ 60
+	SYS_create equ 85
+	SYS_time equ 201
 
 ; other data 
 
-inputLength equ 50
-prompt db "Input: ", NULL
-newLine db LF, NULL
+	inputLength equ 50
+	prompt db "Input: ", NULL
+	newLine db LF, NULL
 
 section .bss
 
-chr resb 1
-inputLine resb inputLength+2
+	chr resb 1
+	inputLine resb inputLength+2
+
 
 section .text
-
 global _start
 _start:
 
@@ -73,10 +74,10 @@ _start:
 	mov rdi, inputLine
 	call printString
 
-done:
-	mov rax, SYS_exit
-	mov rdi, EXIT_SUCCESS
-	syscall
+	done:
+		mov rax, SYS_exit
+		mov rdi, EXIT_SUCCESS
+		syscall
 
 
 global printString
