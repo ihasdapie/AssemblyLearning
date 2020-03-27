@@ -23,33 +23,24 @@ section .data
 ; program data
 
 	n dd 10
-	nsq dd 0
-	sum dd 0
-
+	sum dq 0
 
 section .text
 global _start
 _start:
 	; sum([x^2 for x in range(n)])
-	mov ecx, 1 ;counter
-	mov ebx, dword [n] ;ebx for n iter
+	mov r10, 1 ;counter
+	mov ecx, dword [n] ;ebx for n iter
 	
 	sumLoop:
-		mov eax, ecx ;nth number
-		mul eax ;square nth number
-		mov [nsq], eax
-		mov [nsq+4], edx ;store n**2 in nsq
+		mov rax, r10 ;nth number
+		mul rax ;square nth number		
+		add qword [sum], rax
+		inc r10
+		loop sumLoop
 		
-		; add nsq to sum, store in sum
-		mov r8d, dword [nsq]
-		add r8d, dword [sum]
-		mov dword [sum], r8d  
 		
-		inc ecx ;increment ecx
-		cmp ecx,  ebx
-		je sumLoopDone
-		
-	sumLoopDone:
+	Done:
 		mov rax, SYS_exit
 		mov rdi, EXIT_SUCCESS
 		syscall
