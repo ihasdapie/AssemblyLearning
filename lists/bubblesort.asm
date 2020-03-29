@@ -22,7 +22,63 @@ section .data
 
 ; my variables
 	
-	myList dd 1,2,3,4,5,100,920,85
+	myList dd 950,6,3,1,5,100,920,3
 	myListLen dd 8
 	sum dd 0
+
+;~ for x in range(n):
+	;~ for y in range(n):
+		;~ if l[x] > l[y]
+			;~ swap x, y
+
+section .text
+global _start
+_start:
+	
+	mov r11, 0 ;outside loop
+	mov r12, 0 ;inside loop
+	mov eax, 0 ; for comparisons (outside loop)
+	
+	bubbleOutLoop:
+		inc r11
+		cmp r11, myListLen
+		jge outDone
+	
+		bubbleInLoop:
+			inc r12
+			cmp r12, myListLen
+			jge inDone
+			
+			mov eax, [myList+(r11*4)]
+			mov ebx, [myList+(r12*4)]
+			
+			cmp eax, ebx
+			jge bubbleInLoopSkipElse
+			
+			bubbleInLoopElse: ;swap myList[r11], myList[r12]
+				mov [myList+(r11*4)], ebx
+				mov [myList+(r12*4)], eax
+				jmp bubbleInLoop
+				
+			bubbleInLoopSkipElse:
+				jmp bubbleInLoop
+		
+		inDone:
+			mov r12, 0
+			jmp bubbleOutLoop
+	
+	jmp bubbleOutLoop
+
+	outDone:
+		jmp done
+
+done:
+	mov rax, SYS_exit
+	mov rdi, EXIT_SUCCESS
+	syscall
+
+
+
+
+
 
