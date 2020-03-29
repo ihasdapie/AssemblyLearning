@@ -23,7 +23,7 @@ section .data
 ; program data
 
 	n dd 15
-	fibList times n dd 0
+	fibList times 15 dd 0
 
 section .text
 global _start
@@ -32,17 +32,17 @@ _start:
 	mov rcx, n ; rcx = counter
 	mov rsi, 2 ; index
 	mov eax, 0 ;current fib
-	mov r9, 0; ind = 0
-	mov r10, 1; ind = 1
+	mov r9d, 0; ind = 0
+	mov r10d, 1; ind = 1
 	
-	mov dword [fibList+(0*4)], r9
-	mov dword [fibList+(1*4)], r10
+	mov dword [fibList+(0*4)], r9d
+	mov dword [fibList+(1*4)], r10d
 
 	fibLoop:
-		mov eax, r9
-		add eax, r10 ;fib = a + b
-		mov r9, r10
-		mov r10, eax
+		mov eax, r9d
+		add eax, r10d ;fib = a + b
+		mov r9d, r10d
+		mov r10d, eax
 		mov dword [fibList+(rsi*4)], eax
 		inc rsi
 		loop fibLoop
