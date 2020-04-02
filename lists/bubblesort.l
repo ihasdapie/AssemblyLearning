@@ -42,44 +42,43 @@
     42                                 
     43                                  bubbleOutLoop:
     44 00000013 49FFC3                  inc r11
-    45 00000016 4981FB[00000000]        cmp r11, myListLen
-    46 0000001D 7D3D                    jge outDone
+    45 00000016 4C3B1C25[00000000]      cmp r11, [myListLen]
+    46 0000001E 7D3E                    jge outDone
     47                                 
     48                                  bubbleInLoop:
-    49 0000001F 49FFC4                  inc r12
-    50 00000022 4981FC[00000000]        cmp r12, myListLen
-    51 00000029 7D26                    jge inDone
+    49 00000020 49FFC4                  inc r12
+    50 00000023 4C3B2425[00000000]      cmp r12, [myListLen]
+    51 0000002B 7D26                    jge inDone
     52                                 
-    53 0000002B 428B049D[00000000]      mov eax, [myList+(r11*4)]
-    54 00000033 428B1CA5[00000000]      mov ebx, [myList+(r12*4)]
+    53 0000002D 428B049D[00000000]      mov eax, [myList+(r11*4)]
+    54 00000035 428B1CA5[00000000]      mov ebx, [myList+(r12*4)]
     55                                 
-    56 0000003B 39D8                    cmp eax, ebx
-    57 0000003D 7D10                    jge bubbleInLoopSkipElse
-    58                                 
-    59                                  bubbleInLoopElse:
-    60 0000003F 42891C9D[00000000]      mov [myList+(r11*4)], ebx
-    61 00000047 428904A5[00000000]      mov [myList+(r12*4)], eax
-    62 0000004F EBCC                    jmp bubbleInLoop
-    63                                 
-    64                                  bubbleInLoopSkipElse:
-    65 00000051 EBCA                    jmp bubbleInLoop
-    66                                 
-    67                                  inDone:
-    68 00000053 49C7C400000000          mov r12, 0
-    69 0000005A EBB5                    jmp bubbleOutLoop
+    56 0000003D 39D8                    cmp eax, ebx
+    57 0000003F 7E00                    jle swap
+    58 00000041 EBDB                    jmp bubbleInLoop
+    59                                 
+    60                                  swap:
+    61 00000043 42891C9D[00000000]      mov [myList+(r11*4)], ebx
+    62 0000004B 428904A5[00000000]      mov [myList+(r12*4)], eax
+    63 00000053 EBC9                    jmp bubbleInLoop
+    64                                 
+    65                                  inDone:
+    66 00000055 49C7C400000000          mov r12, 0
+    67 0000005C EBB3                    jmp bubbleOutLoop
+    68                                 
+    69 0000005E EBB1                    jmp bubbleOutLoop
     70                                 
-    71 0000005C EBB3                    jmp bubbleOutLoop
-    72                                 
-    73                                  outDone:
-    74 0000005E EBFE                    jmp done
-    75                                 
-    76                                 done:
-    77 00000060 48C7C03C000000          mov rax, SYS_exit
-    78 00000067 48C7C700000000          mov rdi, EXIT_SUCCESS
-    79 0000006E 0F05                    syscall
+    71                                  outDone:
+    72 00000060 EBFE                    jmp done
+    73                                 
+    74                                 done:
+    75 00000062 48C7C03C000000          mov rax, SYS_exit
+    76 00000069 48C7C700000000          mov rdi, EXIT_SUCCESS
+    77 00000070 0F05                    syscall
+    78                                 
+    79                                 
     80                                 
     81                                 
     82                                 
     83                                 
     84                                 
-    85                                 
